@@ -33,6 +33,7 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^6.5.1"
+    "eslint": "^6.5.1",
+    "reactotron-react-js": "^3.3.5"
   }
 }
