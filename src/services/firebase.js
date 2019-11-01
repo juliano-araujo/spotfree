@@ -4,7 +4,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 
-import config from '../config/firebase'
+import config from 'config/firebase'
 
 firebase.initializeApp(config)
 
