@@ -9,7 +9,7 @@ import {auth} from 'services/firebase';
 export default function Login() {
 	const [fields, setFields] = useState({
 		email: '',
-		signInWithEmailAndPassword: '',
+		password: '',
 	});
 
 	async function login() {
@@ -53,7 +53,7 @@ export default function Login() {
 								Entrar
 							</h1>
 
-							{/* <!--Formulario Login--> */}
+							{/* Formulario Login */}
 							<form
 								className="form-signin px-2"
 								method="POST"
@@ -62,6 +62,8 @@ export default function Login() {
 									Usuário ou Email
 								</label>
 								<input
+									value={fields.email}
+									onChange={handleInputChange}
 									type="text"
 									name="input_usuario"
 									className="form-control form-control-lg w-100"
@@ -73,6 +75,8 @@ export default function Login() {
 									Senha
 								</label>
 								<input
+									value={fields.password}
+									onChange={handleInputChange}
 									type="password"
 									name="input_senha"
 									className="form-control form-control-lg w-100"
@@ -85,7 +89,7 @@ export default function Login() {
 									</a>
 								</small>
 
-								{/* <!-- Button de Enviar Formulario--> */}
+								{/* Button de Enviar Formulario */}
 								<button
 									className="btn btn-lg btn-block bg-success w-75  my-4 mx-auto"
 									type="submit">
