@@ -12,10 +12,10 @@ export default function Login() {
 		password: '',
 	});
 
-	async function login() {
+	async function login(event) {
+		event.preventDefault();
 		try {
-			await auth.signInWithEmailAndPassword(fields.name, fields.password);
-			console.tron.log('foi');
+			await auth.signInWithEmailAndPassword(fields.email, fields.password);
 		} catch (error) {
 			var errorCode = error.code;
 			if (errorCode === 'auth/wrong-password') {
@@ -31,16 +31,18 @@ export default function Login() {
 			}
 			console.log(error);
 		};
-		}
+	}
 
 	function handleInputChange(event) {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;
 
-		setFields({
+		let fieldsLocal = Object.assign({}, fields)
+		Object.assign(fieldsLocal, {
 			[name]: value,
 		});
+		setFields(fieldsLocal);
 	}
 
 	return (
@@ -70,6 +72,7 @@ export default function Login() {
 
 							{/* Formulario Login */}
 							<form
+								onSubmit={login}
 								className="form-signin px-2">
 								<label>
 									Usuário ou Email
@@ -78,7 +81,7 @@ export default function Login() {
 									value={fields.email}
 									onChange={handleInputChange}
 									type="text"
-									name="input_usuario"
+									name="email"
 									className="form-control form-control-lg w-100"
 									placeholder="Digite seu usuário ou email"
 									required
@@ -91,13 +94,13 @@ export default function Login() {
 									value={fields.password}
 									onChange={handleInputChange}
 									type="password"
-									name="input_senha"
+									name="password"
 									className="form-control form-control-lg w-100"
 									placeholder="Digite sua senha"
 									required
 								/>
 								<small>
-									<a href="pgesqsenha.php">
+									<a href="google.com">
 										Esqueceu a senha?
 									</a>
 								</small>
@@ -105,7 +108,7 @@ export default function Login() {
 								{/* Button de Enviar Formulario */}
 								<button
 									className="btn btn-lg btn-block bg-success w-75  my-4 mx-auto"
-									onClick={login}>
+									type="submit">
 									Entrar
 								</button>
 							</form>
