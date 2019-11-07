@@ -15,8 +15,23 @@ export default function Login() {
 	async function login() {
 		try {
 			await auth.signInWithEmailAndPassword(fields.name, fields.password);
-		} catch (error) {}
-	}
+			console.tron.log('foi');
+		} catch (error) {
+			var errorCode = error.code;
+			if (errorCode === 'auth/wrong-password') {
+				console.tron.log('senha errada');
+			} else if  (errorCode === 'auth/user-not-found') {
+				console.tron.log('usuario n encontrado');
+			}else if (errorCode === 'auth/invalid-email'){
+				console.tron.log('email invalido');
+			}else if(errorCode === 'auth/user-disabled'){
+				console.tron.log('usuario desabilitado');
+			}else{
+				console.tron.log(error);
+			}
+			console.log(error);
+		};
+		}
 
 	function handleInputChange(event) {
 		const target = event.target;
@@ -55,9 +70,7 @@ export default function Login() {
 
 							{/* Formulario Login */}
 							<form
-								className="form-signin px-2"
-								method="POST"
-								action="assets/php/login.php">
+								className="form-signin px-2">
 								<label>
 									Usuário ou Email
 								</label>
@@ -92,7 +105,7 @@ export default function Login() {
 								{/* Button de Enviar Formulario */}
 								<button
 									className="btn btn-lg btn-block bg-success w-75  my-4 mx-auto"
-									type="submit">
+									onClick={login}>
 									Entrar
 								</button>
 							</form>
