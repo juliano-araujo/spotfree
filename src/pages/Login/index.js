@@ -1,12 +1,18 @@
 import React, {useState} from 'react';
 
+import { useHistory, useLocation } from 'react-router-dom';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import { Menu, Body, SignIn, Container } from './styles';
 import logoLg from 'assets/images/Spotify-logo.png'
 
-import {auth} from 'services/firebase';
+import { auth, isAuthenticated } from 'services/firebase';
 
 export default function Login() {
+	const location = useLocation();
+	const history = useHistory();
+	const { from } = location.state || { from: { pathname: "/" } };
+
 	const [fields, setFields] = useState({
 		email: '',
 		password: '',
@@ -16,18 +22,26 @@ export default function Login() {
 		event.preventDefault();
 		try {
 			await auth.signInWithEmailAndPassword(fields.email, fields.password);
+			history.replace(from);
+
 		} catch (error) {
 			var errorCode = error.code;
+
 			if (errorCode === 'auth/wrong-password') {
 				console.tron.log('senha errada');
+
 			} else if  (errorCode === 'auth/user-not-found') {
 				console.tron.log('usuario n encontrado');
+
 			}else if (errorCode === 'auth/invalid-email'){
 				console.tron.log('email invalido');
+
 			}else if(errorCode === 'auth/user-disabled'){
 				console.tron.log('usuario desabilitado');
+
 			}else{
 				console.tron.log(error);
+
 			}
 			console.log(error);
 		};

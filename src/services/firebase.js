@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import  firebase from 'firebase';
 
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -39,4 +39,16 @@ export async function getUserDb() {
 			return userDoc;
 		}
 	}
+}
+
+export const isAuthenticated = () => {
+	if(auth.currentUser){
+		return true;
+	}else{
+		return false;
+	}
+};
+
+export async function logOut(){
+	auth.signOut();
 }
