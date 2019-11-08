@@ -1,7 +1,7 @@
 import Reactotron from 'reactotron-react-js'
 
 const tron = Reactotron
-  .configure() 
+  .configure()
   .connect();
 
 tron.clear();
