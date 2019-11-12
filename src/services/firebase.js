@@ -4,7 +4,6 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 
-import { timeOut } from 'util/index';
 import config from 'config/firebase';
 
 firebase.initializeApp(config);
@@ -44,4 +43,12 @@ export async function getUserDb() {
 
 export async function logOut() {
 	auth.signOut();
+}
+
+export function isAuthenticated() {
+	if (auth.currentUser) {
+		return true;
+	} else {
+		return false;
+	}
 }
