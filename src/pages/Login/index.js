@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import { useHistory, useLocation } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Menu, Body, SignIn, Container } from './styles';
-import logoLg from 'assets/images/Spotify-logo.png'
+import logoLg from 'assets/images/Spotify-logo.png';
 
-import { auth, isAuthenticated } from 'services/firebase';
+import { auth } from 'services/firebase';
 
 export default function Login() {
 	const location = useLocation();
 	const history = useHistory();
-	const { from } = location.state || { from: { pathname: "/" } };
+	const { from } = location.state || { from: { pathname: '/' } };
 
 	const [fields, setFields] = useState({
 		email: '',
@@ -23,28 +23,22 @@ export default function Login() {
 		try {
 			await auth.signInWithEmailAndPassword(fields.email, fields.password);
 			history.replace(from);
-
 		} catch (error) {
 			var errorCode = error.code;
 
 			if (errorCode === 'auth/wrong-password') {
 				console.tron.log('senha errada');
-
-			} else if  (errorCode === 'auth/user-not-found') {
+			} else if (errorCode === 'auth/user-not-found') {
 				console.tron.log('usuario n encontrado');
-
-			}else if (errorCode === 'auth/invalid-email'){
+			} else if (errorCode === 'auth/invalid-email') {
 				console.tron.log('email invalido');
-
-			}else if(errorCode === 'auth/user-disabled'){
+			} else if (errorCode === 'auth/user-disabled') {
 				console.tron.log('usuario desabilitado');
-
-			}else{
+			} else {
 				console.tron.log(error);
-
 			}
 			console.log(error);
-		};
+		}
 	}
 
 	function handleInputChange(event) {
@@ -52,7 +46,7 @@ export default function Login() {
 		const value = target.value;
 		const name = target.name;
 
-		let fieldsLocal = Object.assign({}, fields)
+		let fieldsLocal = Object.assign({}, fields);
 		Object.assign(fieldsLocal, {
 			[name]: value,
 		});
@@ -64,11 +58,11 @@ export default function Login() {
 			<header>
 				<Menu>
 					<nav className="navbar navbar-dark">
-						<a style={{ margin: 'auto'}} className="my-1" href="login.html">
+						<a style={{ margin: 'auto' }} className="my-1" href="login.html">
 							<img
 								src={logoLg}
 								alt="Imagem não disponível"
-								style={{width: '15rem'}}
+								style={{ width: '15rem' }}
 							/>
 						</a>
 					</nav>
@@ -78,19 +72,14 @@ export default function Login() {
 			<main>
 				<Body className="container-fluid">
 					<div className="row h-100">
-						<SignIn
-							className="col-xs-8 col-sm-8 col-md-8 col-lg-6 col-xl-3">
+						<SignIn className="col-xs-8 col-sm-8 col-md-8 col-lg-6 col-xl-3">
 							<h1 className="display-2 mb-3 text-center text-success">
 								Entrar
 							</h1>
 
 							{/* Formulario Login */}
-							<form
-								onSubmit={login}
-								className="form-signin px-2">
-								<label>
-									Usuário ou Email
-								</label>
+							<form onSubmit={login} className="form-signin px-2">
+								<label>Usuário ou Email</label>
 								<input
 									value={fields.email}
 									onChange={handleInputChange}
@@ -101,9 +90,7 @@ export default function Login() {
 									required
 								/>
 
-								<label className="mt-2">
-									Senha
-								</label>
+								<label className="mt-2">Senha</label>
 								<input
 									value={fields.password}
 									onChange={handleInputChange}
@@ -114,9 +101,7 @@ export default function Login() {
 									required
 								/>
 								<small>
-									<a href="google.com">
-										Esqueceu a senha?
-									</a>
+									<a href="google.com">Esqueceu a senha?</a>
 								</small>
 
 								{/* Button de Enviar Formulario */}

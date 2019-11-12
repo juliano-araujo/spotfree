@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 
-import { logOut, isAuthenticated } from 'services/firebase'
+import { logOut, isAuthenticated } from 'services/firebase';
 
 export default function Teste() {
 	const history = useHistory();
@@ -11,10 +11,13 @@ export default function Teste() {
 	return (
 		<>
 			<h1>Teste</h1>
-			<button onClick={()=>{
-				logOut();
-				history.push("/");
-			}}>Sair</button>
+			<button
+				onClick={() => {
+					logOut();
+					history.push('/login');
+				}}>
+				Sair
+			</button>
 		</>
 	);
 }
