@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-	background-color: 'black';
-	position: 'fixed';
+export const FixedNav = styled.nav`
+	background-color: black;
+	position: fixed;
 `;

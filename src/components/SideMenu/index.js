@@ -1,36 +1,47 @@
 import React from 'react';
 
-import 'bootstrap/dist/css/bootstrap.css';
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
-import logoLg from 'assets/images/Spotify-logo.png'
-import logoMd from 'assets/images/Spotify-logo-md.png'
-import { Container } from './styles';
+import Logo from 'assets/images/Spotify-logo.png';
+import { FixedNav } from './styles';
 
 export default function SideMenu() {
-  return (
-	<aside class="col-md-2 d-none d-md-block d-lg-block px-0">
-        <Container className="container-fluid h-100">
-            <div className="container-fluid d-none d-lg-block">
-                <img className="my-4" src={logoLg} alt="Imagem não Disponível" style={{width: '9rem'}}/>
-            </div>
-            <div className="container-fluid d-none d-md-block d-lg-none">
-                <img className="my-4" src={logoMd} alt="Imagem não Disponível"
-                            style={{width: '4rem'}}/>
-            </div>
+	return (
+		<aside className="col-2 col-sm-2 col-md-3 col-lg-2 d-none d-md-flex d-lg-flex px-0">
+			<FixedNav className="h-100 w-100">
+				{/* Logo */}
+				<div className="pl-4">
+					<img
+						className="my-4"
+						src={Logo}
+						alt="Imagem não Disponível"
+						style={{ width: '8rem' }}
+					/>
+				</div>
 
-            <ul className="nav flex-column">
-                <li className="nav-item">
-                    <Link className="nav-link text-white border-left border-success" to="">Início</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="">Pesquisar</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="">Minha Biblioteca</Link>
-                </li>
-            </ul>
-        </Container>
-	</aside>
-  );
+				{/* Links das Paginas */}
+				<ul className="nav flex-column">
+					<li className="nav-item">
+						<Link to="/browse" className="nav-link border-left border-success">
+							<Icon icon="home" />
+							&nbsp;Início
+						</Link>
+					</li>
+					<li className="nav-item">
+						<Link to="/search" className="nav-link">
+							<Icon icon="search" />
+							&nbsp;Pesquisar
+						</Link>
+					</li>
+					<li className="nav-item">
+						<Link to="/collection" className="nav-link">
+							<Icon icon="compact-disc" />
+							&nbsp;Minha Biblioteca
+						</Link>
+					</li>
+				</ul>
+			</FixedNav>
+		</aside>
+	);
 }

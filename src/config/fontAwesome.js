@@ -4,6 +4,17 @@ import {
 	faStepBackward,
 	faStepForward,
 	faPause,
+	faCompactDisc,
+	faSearch,
+	faHome,
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faPlay, faStepBackward, faStepForward, faPause);
+library.add(
+	faPlay,
+	faStepBackward,
+	faStepForward,
+	faPause,
+	faCompactDisc,
+	faSearch,
+	faHome,
+);
