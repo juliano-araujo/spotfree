@@ -9,7 +9,7 @@ import { FixedNav } from './styles';
 export default function SideMenu() {
 	return (
 		<aside className="col-2 col-sm-2 col-md-3 col-lg-2 d-none d-md-flex d-lg-flex px-0">
-			<FixedNav className="h-100 w-100">
+			<FixedNav className="h-100 w-100 pl-4">
 				{/* Logo */}
 				<div className="pl-4">
 					<img
