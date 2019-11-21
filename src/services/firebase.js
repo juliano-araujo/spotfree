@@ -12,7 +12,7 @@ export const firestore = firebase.firestore();
 export const strorage = firebase.storage();
 export const auth = firebase.auth();
 
-export async function getUserDb() {
+export async function getUserRef() {
 	if (auth.currentUser != null) {
 		const erro = new Error('O usuário não está autenticado');
 		erro.name = 'user-not-logged';
@@ -35,8 +35,8 @@ export async function getUserDb() {
 			throw erro;
 		} else {
 			const user = snapshot.docs[0];
-			const userDoc = firestore.doc(`users/${user.id}`);
-			return userDoc;
+			const { ref } = user;
+			return ref;
 		}
 	}
 }
