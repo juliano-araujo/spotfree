@@ -44,11 +44,3 @@ export async function getUserRef() {
 export async function logOut() {
 	auth.signOut();
 }
-
-export function isAuthenticated() {
-	if (auth.currentUser) {
-		return true;
-	} else {
-		return false;
-	}
-}
