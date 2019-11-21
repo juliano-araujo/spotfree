@@ -9,7 +9,7 @@ import config from 'config/firebase';
 firebase.initializeApp(config);
 
 export const firestore = firebase.firestore();
-export const strorage = firebase.storage();
+export const storage = firebase.storage();
 export const auth = firebase.auth();
 
 export async function getUserRef() {
