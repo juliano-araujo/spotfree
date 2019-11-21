@@ -2,22 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Route, Redirect } from 'react-router-dom';
 
-import { auth } from 'services/firebase';
+import { useAuthState } from 'hooks/useAuthState';
 
 export default function PrivateRoute({ component: Component, ...rest }) {
-	const [isAuthenticated, setIsAuthenticated] = useState(true);
-
-	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged(user => {
-			if (user) {
-				setIsAuthenticated(true);
-			} else {
-				setIsAuthenticated(false);
-			}
-		});
-
-		return unsubscribe;
-	}, []);
+	const isAuthenticated = useAuthState();
 
 	return (
 		<Route
