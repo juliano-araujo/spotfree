@@ -5,11 +5,13 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Test from 'test';
 import Login from 'pages/Login';
+import Register from 'pages/Register';
 
 const Routes = () => (
 	<Router>
 		<Switch>
 			<Route path="/login" component={Login} />
+			<Route path="/register" component={Register} />
 			<PrivateRoute path="/" component={Test} />
 		</Switch>
 	</Router>
