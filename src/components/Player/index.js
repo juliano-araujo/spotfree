@@ -35,7 +35,7 @@ export default function Player({
 
 	const [isHovering, setIsHovering] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
-	const [time, setTime] = useState('00:00');
+	const [time, setTime] = useState(0);
 
 	const audioRef = useRef(null);
 
@@ -48,8 +48,11 @@ export default function Player({
 	}
 
 	function handleDurationChange() {
-		const converted = convertSecondsToTime(audioRef.current.currentTime);
-		setTime(converted);
+		setTime(audioRef.current.currentTime);
+	}
+
+	function handleLoadMetadata() {
+		setTime(convertSecondsToTime(audioRef.current.duration));
 	}
 
 	function tooglePlayPause() {
@@ -62,10 +65,6 @@ export default function Player({
 		}
 	}
 
-	function nextMusic() {}
-
-	function backMusic() {}
-
 	function buttonIcon() {
 		if (isPlaying) {
 			return 'play';
@@ -77,10 +76,10 @@ export default function Player({
 	return (
 		<Container className="fixed-bottom">
 			<div className="row my-2">
-				{/* Informações do Album */}
+				{/* Album Info */}
 				<div className="col-3">
 					<div className="row">
-						{/* Imagem Album */}
+						{/* Album Image */}
 						<div className="col-xs-7 col-sm-7 col-md-6 col-lg-4 col-xl-3 d-none d-sm-block">
 							<Link to={`album/${albumId}`}>
 								<img
@@ -91,7 +90,7 @@ export default function Player({
 							</Link>
 						</div>
 
-						{/* Imagem Album para Mobile */}
+						{/* Album Image for Mobile */}
 						<div className="col-xs-7 col-sm-7 col-md-6 col-lg-4 col-xl-3 d-xs-block d-sm-none">
 							<Link to={`album/${albumId}`}>
 								<img
@@ -102,7 +101,7 @@ export default function Player({
 								/>
 							</Link>
 						</div>
-						{/* Artista */}
+						{/* Artist */}
 						<div className="col-md-6 col-lg-8 d-xs-block d-none d-md-block">
 							<div>
 								<p className="text-white mt-2 mb-0">{musicName}</p>
@@ -112,26 +111,27 @@ export default function Player({
 					</div>
 				</div>
 
-				{/* Controles */}
+				{/* Controls */}
 				<div className="col-6">
 					<div className="row">
 						<div className="col-12">
 							<Icons className="w-100 mb-0">
-								{/* TODO icons */}
-								<Icon icon="step-backward" />
+								<Icon icon="step-backward" onClick={onBackMusic} />
 								<Icon
 									icon={buttonIcon}
 									className="ml-2 mr-1"
 									onClick={tooglePlayPause}
 								/>
-								<Icon icon="step-forward" />
+								<Icon icon="step-forward" onClick={onNextMusic} />
 							</Icons>
 						</div>
 
 						<div className="col-12">
 							<div className="row justify-content-between">
 								<div className="col-1 p-0">
-									<p className="text-white float-right my-2">{time}</p>
+									<p className="text-white float-right my-2">
+										{convertSecondsToTime(audioRef.current.duration)}
+									</p>
 								</div>
 								<div className="col-10 my-auto">
 									<AudioBar
@@ -148,7 +148,7 @@ export default function Player({
 								</div>
 								<div className="col-1 p-0">
 									<p className="text-white float-left my-2">
-										{convertSecondsToTime(audioRef.current.duration)}
+										{convertSecondsToTime(time)}
 									</p>
 								</div>
 							</div>
@@ -160,6 +160,7 @@ export default function Player({
 				ref={audioRef}
 				src={audioUrl}
 				onDurationChange={handleDurationChange}
+				onLoadedMetadata={handleLoadMetadata}
 			/>
 		</Container>
 	);
