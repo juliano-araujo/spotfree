@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 
+import { useHistory, useLocation } from 'react-router-dom';
+
 import { auth } from 'services/firebase';
 import { Container, Menu, LogoContainer } from './styles';
 import Logo from 'assets/images/Spotify-logo.png';
 
 export default function Register() {
+	const location = useLocation();
+	const history = useHistory();
+	const { from } = location.state || { from: { pathname: '/' } };
+
 	const [fields, setFields] = useState({
 		email: '',
 		password: '',
@@ -13,7 +19,22 @@ export default function Register() {
 
 	async function register(event) {
 		event.preventDefault();
-		auth.createUserWithEmailAndPassword(fields.email, fields.password);
+		try {
+			auth.createUserWithEmailAndPassword(fields.email, fields.password);
+			history.replace(from);
+		} catch (err) {
+			const errCode = err.code;
+			const errMessage = err.message;
+			if (errCode === 'auth/email-already-in-use') {
+				console.log('Email já cadastrado');
+			} else if (errCode === 'auth/invalid-email') {
+				console.log('Email Inválido');
+			} else if (errCode === 'auth/weak-password') {
+				console.log('Senha fraca');
+			} else {
+				console.log(errMessage);
+			}
+		}
 	}
 
 	function handleFieldChange(event) {
