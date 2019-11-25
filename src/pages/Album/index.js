@@ -27,12 +27,13 @@ export default function Album({ playingMusicId }) {
 
 			if (albumSnap.exists) {
 				// Set the info of the album
-				const { artist, imagefile, name, year } = albumSnap.data();
+				const { artist, name, year } = albumSnap.data();
 				setAlbumArtist(artist);
 				setAlbumName(name);
 				setAlbumYear(year);
 
 				// Download and set the album image
+				const imagefile = albumSnap.get('imagefile');
 				const imageRef = storage.ref(`albuns/${albumId}/${imagefile}`);
 				const imageUrl = await imageRef.getDownloadURL();
 				setAlbumImageUrl(imageUrl);
