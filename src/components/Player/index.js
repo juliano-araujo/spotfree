@@ -104,8 +104,12 @@ export default function Player({
 						{/* Artist */}
 						<div className="col-md-6 col-lg-8 d-xs-block d-none d-md-block">
 							<div>
-								<p className="text-white mt-2 mb-0">{musicName}</p>
-								<p className="blockquote-footer m-0">{musicArtist}</p>
+								<p className="text-white mt-2 mb-0">
+									{musicName}
+								</p>
+								<p className="blockquote-footer m-0">
+									{musicArtist}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -116,13 +120,19 @@ export default function Player({
 					<div className="row">
 						<div className="col-12">
 							<Icons className="w-100 mb-0">
-								<Icon icon="step-backward" onClick={onBackMusic} />
+								<Icon
+									icon="step-backward"
+									onClick={onBackMusic}
+								/>
 								<Icon
 									icon={buttonIcon}
 									className="ml-2 mr-1"
 									onClick={tooglePlayPause}
 								/>
-								<Icon icon="step-forward" onClick={onNextMusic} />
+								<Icon
+									icon="step-forward"
+									onClick={onNextMusic}
+								/>
 							</Icons>
 						</div>
 
@@ -130,7 +140,9 @@ export default function Player({
 							<div className="row justify-content-between">
 								<div className="col-1 p-0">
 									<p className="text-white float-right my-2">
-										{convertSecondsToTime(audioRef.current.duration)}
+										{convertSecondsToTime(
+											audioRef.current.duration,
+										)}
 									</p>
 								</div>
 								<div className="col-10 my-auto">
