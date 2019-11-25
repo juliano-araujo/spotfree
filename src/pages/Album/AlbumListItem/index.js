@@ -27,7 +27,7 @@ export default function AlbumListItem({
 			if (playingState === 'playing') {
 				return 'play';
 			} else {
-				return 'false';
+				return 'pause';
 			}
 		} else {
 			return 'music';
