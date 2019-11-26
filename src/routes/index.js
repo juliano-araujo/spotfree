@@ -6,13 +6,14 @@ import PrivateRoute from './PrivateRoute';
 import Test from 'test';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
+import Main from 'pages/Main';
 
 const Routes = () => (
 	<Router>
 		<Switch>
 			<Route path="/login" component={Login} />
 			<Route path="/register" component={Register} />
-			<PrivateRoute path="/" component={Test} />
+			<PrivateRoute path="/" component={Main} />
 		</Switch>
 	</Router>
 );

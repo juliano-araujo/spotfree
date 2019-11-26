@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { useHistory, useLocation } from 'react-router-dom';
 
-import 'bootstrap/dist/css/bootstrap.css';
 import { Menu, Body, SignIn, Container } from './styles';
 import logoLg from 'assets/images/Spotify-logo.png';
 
@@ -21,7 +20,10 @@ export default function Login() {
 	async function login(event) {
 		event.preventDefault();
 		try {
-			await auth.signInWithEmailAndPassword(fields.email, fields.password);
+			await auth.signInWithEmailAndPassword(
+				fields.email,
+				fields.password,
+			);
 			history.replace(from);
 		} catch (error) {
 			var errorCode = error.code;
@@ -46,11 +48,13 @@ export default function Login() {
 		const value = target.value;
 		const name = target.name;
 
-		let fieldsLocal = Object.assign({}, fields);
-		Object.assign(fieldsLocal, {
-			[name]: value,
-		});
-		setFields(fieldsLocal);
+		// let fieldsLocal = Object.assign({}, fields);
+		// Object.assign(fieldsLocal, {
+		// 	[name]: value,
+		// });
+		// setFields(fieldsLocal);
+
+		setFields(state => ({ ...state, [name]: value }));
 	}
 
 	return (
@@ -58,7 +62,11 @@ export default function Login() {
 			<header>
 				<Menu>
 					<nav className="navbar navbar-dark">
-						<a style={{ margin: 'auto' }} className="my-1" href="login.html">
+						{/* TODO arrumar */}
+						<a
+							style={{ margin: 'auto' }}
+							className="my-1"
+							href="login.html">
 							<img
 								src={logoLg}
 								alt="Imagem não disponível"

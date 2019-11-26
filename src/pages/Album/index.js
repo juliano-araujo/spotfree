@@ -18,7 +18,7 @@ export default function Album({ playingMusicId }) {
 	const [albumYear, setAlbumYear] = useState('');
 	const [albumMusics, setAlbumMusics] = useState([{}]);
 
-	let { albumId } = useParams();
+	let albumId = useParams().id;
 
 	async function fetchAlbumInfo(albumId) {
 		try {
