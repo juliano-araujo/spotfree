@@ -74,7 +74,7 @@ export default function Player({
 	}
 
 	return (
-		<Container className="fixed-bottom">
+		<Container className="fixed-bottom px-3">
 			<div className="row my-2">
 				{/* Album Info */}
 				<div className="col-3">
