@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 
+import { Switch } from 'react-router-dom';
+
+import MobileHeader from 'components/MobileHeader';
+import SideMenu from 'components/SideMenu';
+import Player from 'components/Player';
+import Routes from 'routes/main.routes';
+import { MainSection } from './styles';
 import { firestore, storage } from 'services/firebase';
 
 export default function Main() {
@@ -22,6 +29,7 @@ export default function Main() {
 
 	function cleanPlayList() {
 		setPlayList([{}]);
+		setCurrentMusic(-1);
 	}
 
 	async function setPlaylistToAlbum(albumId, musicId) {
@@ -30,7 +38,12 @@ export default function Main() {
 
 		if (albumSnap.exists) {
 			// Set the info of the album
-			const { artist, name, year } = albumSnap.data();
+			const {
+				artist: albumArtist,
+				name: albumName,
+				year: albumYear,
+			} = albumSnap.data();
+			const albumId = albumSnap.id;
 
 			// Download and set the album image
 			const imagefile = albumSnap.get('imagefile');
@@ -43,16 +56,21 @@ export default function Main() {
 				.get();
 
 			let musicList = [];
-			musicsSnap.forEach(documentSnap => {
+			musicsSnap.forEach(async documentSnap => {
 				const musicData = documentSnap.data();
 				const musicFilename = `albuns/${albumId}/musics/${musicData.filename}`;
+				const musicRef = storage.ref(musicFilename);
+				const musicUrl = await musicRef.getDownloadURL();
+
 				Object.assign(musicData, {
 					id: documentSnap.id,
+					albumId,
 					filename: musicFilename,
 					albumImageUrl: imageUrl,
-					year,
-					albumArtist: artist,
-					albumName: name,
+					albumYear,
+					albumArtist,
+					albumName,
+					musicUrl,
 				});
 
 				musicList.push(musicData);
@@ -69,5 +87,31 @@ export default function Main() {
 		}
 	}
 
-	return <div />;
+	return (
+		<>
+			<header>
+				<MobileHeader />
+			</header>
+			<section className="container-fluid p-0">
+				<div className="row no-gutters mx-0 min-vh-100 vh-100">
+					<SideMenu />
+					<MainSection className="col-xs-12 col-sm-12 col-md-9 col-lg-10">
+						{/* TODO Pass props */}
+						<Routes />
+					</MainSection>
+				</div>
+			</section>
+			<footer>
+				<Player
+					musicName={playList[currentMusic].name}
+					musicArtist={playList[currentMusic].artist}
+					albumId={playList[currentMusic].albumId}
+					audioUrl={playList[currentMusic].musicUrl}
+					imageUrl={playList[currentMusic].albumImageUrl}
+					onNextMusic={nextMusic}
+					onBackMusic={backMusic}
+				/>
+			</footer>
+		</>
+	);
 }
