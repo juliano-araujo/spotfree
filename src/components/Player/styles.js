@@ -13,16 +13,6 @@ export const Icons = styled.div`
 	margin-bottom: 2%;
 `;
 
-export const AudioBar = styled.div`
-	height: 0.5vh;
-	background-color: #404040;
-`;
-
-export const ProgressBar = styled.div`
-	background-color: ${props => (props.hover ? '#1db954' : '#b3b3b3')};
-	width: 90%;
-`;
-
 export const Icon = styled(FontAwesomeIcon)`
 	:hover {
 		opacity: 0.5;
