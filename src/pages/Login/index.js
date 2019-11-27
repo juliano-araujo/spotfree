@@ -5,6 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Menu, Body, SignIn, Container } from './styles';
 import logoLg from 'assets/images/Spotify-logo.png';
 
+import { Link } from 'react-router-dom';
 import { auth } from 'services/firebase';
 
 export default function Login() {
@@ -20,10 +21,7 @@ export default function Login() {
 	async function login(event) {
 		event.preventDefault();
 		try {
-			await auth.signInWithEmailAndPassword(
-				fields.email,
-				fields.password,
-			);
+			await auth.signInWithEmailAndPassword(fields.email, fields.password);
 			history.replace(from);
 		} catch (error) {
 			var errorCode = error.code;
@@ -63,10 +61,7 @@ export default function Login() {
 				<Menu>
 					<nav className="navbar navbar-dark">
 						{/* TODO arrumar */}
-						<a
-							style={{ margin: 'auto' }}
-							className="my-1"
-							href="login.html">
+						<a style={{ margin: 'auto' }} className="my-1" href="login.html">
 							<img
 								src={logoLg}
 								alt="Imagem não disponível"
@@ -109,7 +104,7 @@ export default function Login() {
 									required
 								/>
 								<small>
-									<a href="google.com">Esqueceu a senha?</a>
+									<Link to="/register">Não tem conta? Cadastre-se</Link>
 								</small>
 
 								{/* Button de Enviar Formulario */}

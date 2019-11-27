@@ -12,7 +12,7 @@ export default function Home() {
 			const albunsSnap = await albunsRef.get();
 			let albunsList = [];
 
-			albunsSnap.forEach(async album => {
+			const promises = albunsSnap.docs.map(async album => {
 				const { id } = album;
 				const { name, artist } = album.data();
 
@@ -26,9 +26,11 @@ export default function Home() {
 					imageUrl,
 				});
 			});
+			await Promise.all(promises);
 			setAlbuns(albunsList);
 		} catch (err) {
 			console.error(err.name, err.message);
+			console.tron.log(err.name, err.message);
 		}
 	}
 

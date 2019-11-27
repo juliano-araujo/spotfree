@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { auth } from 'services/firebase';
 
-export function useAuthState() {
+export default function useAuthState() {
 	const [isAuthenticated, setIsAuthenticated] = useState(true);
 
 	useEffect(() => {

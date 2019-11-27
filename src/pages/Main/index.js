@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-
-import { Switch } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
 
 import MobileHeader from 'components/MobileHeader';
 import SideMenu from 'components/SideMenu';
 import Player from 'components/Player';
-import Routes from 'routes/main.routes';
+import Routes from 'routes/Main.routes';
 import { MainSection } from './styles';
 import { firestore, storage } from 'services/firebase';
 
 export default function Main() {
 	const [playList, setPlayList] = useState([{}]);
 	const [currentMusic, setCurrentMusic] = useState(-1);
+
+	const playerRef = useRef();
 
 	function nextMusic() {
 		if (currentMusic < playList.length - 1) {
@@ -25,11 +25,6 @@ export default function Main() {
 		if (currentMusic !== -1) {
 			setCurrentMusic(currentMusic - 1);
 		}
-	}
-
-	function cleanPlayList() {
-		setPlayList([{}]);
-		setCurrentMusic(-1);
 	}
 
 	async function setPlaylistToAlbum(albumId, musicId) {
@@ -56,7 +51,7 @@ export default function Main() {
 				.get();
 
 			let musicList = [];
-			musicsSnap.forEach(async documentSnap => {
+			const promises = musicsSnap.docs.map(async documentSnap => {
 				const musicData = documentSnap.data();
 				const musicFilename = `albuns/${albumId}/musics/${musicData.filename}`;
 				const musicRef = storage.ref(musicFilename);
@@ -75,12 +70,12 @@ export default function Main() {
 
 				musicList.push(musicData);
 			});
+			await Promise.all(promises);
 			setPlayList(musicList);
 			if (musicId) {
-				const musicIndex = musicList.findIndex(
-					item => item.id === musicId,
-				);
+				const musicIndex = musicList.findIndex(item => item.id === musicId);
 				setCurrentMusic(musicIndex);
+				playerRef.current.play();
 			} else {
 				setCurrentMusic(-1);
 			}
@@ -96,18 +91,24 @@ export default function Main() {
 				<div className="row no-gutters mx-0 min-vh-100 vh-100">
 					<SideMenu />
 					<MainSection className="col-xs-12 col-sm-12 col-md-9 col-lg-10">
-						{/* TODO Pass props */}
-						<Routes />
+						<Routes setPlaylistToAlbum={setPlaylistToAlbum} />
 					</MainSection>
 				</div>
 			</section>
 			<footer>
 				<Player
-					musicName={playList[currentMusic].name}
-					musicArtist={playList[currentMusic].artist}
-					albumId={playList[currentMusic].albumId}
-					audioUrl={playList[currentMusic].musicUrl}
-					imageUrl={playList[currentMusic].albumImageUrl}
+					ref={playerRef}
+					musicName={playList[currentMusic] ? playList[currentMusic].name : ''}
+					musicArtist={
+						playList[currentMusic] ? playList[currentMusic].artist : ''
+					}
+					albumId={playList[currentMusic] ? playList[currentMusic].albumId : ''}
+					audioUrl={
+						playList[currentMusic] ? playList[currentMusic].musicUrl : ''
+					}
+					imageUrl={
+						playList[currentMusic] ? playList[currentMusic].albumImageUrl : ''
+					}
 					onNextMusic={nextMusic}
 					onBackMusic={backMusic}
 				/>

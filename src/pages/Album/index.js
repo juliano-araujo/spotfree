@@ -15,7 +15,7 @@ export default function Album({
 	const [albumArtist, setAlbumArtist] = useState('');
 	const [albumName, setAlbumName] = useState('');
 	const [albumYear, setAlbumYear] = useState('');
-	const [albumMusics, setAlbumMusics] = useState([{}]);
+	const [albumMusics, setAlbumMusics] = useState([]);
 
 	let albumId = useParams().id;
 
@@ -89,7 +89,7 @@ export default function Album({
 					<div className="col-5 col-xs-3 col-sm-4 col-md-4 col-lg-6 mt-3">
 						<Button
 							onClick={() => {
-								onAlbumPlayingMusicChange(albumId, 0);
+								onAlbumPlayingMusicChange(albumId, albumMusics[0].id);
 							}}
 							className="btn-block text-white py-1">
 							Play
@@ -112,7 +112,6 @@ export default function Album({
 								musicDuration={item.duration}
 								musicArtist={item.artist}
 								onDoubleClick={() => {
-									console.tron.log(item.id);
 									onAlbumPlayingMusicChange(albumId, item.id);
 								}}
 							/>
