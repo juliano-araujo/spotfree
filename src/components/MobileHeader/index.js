@@ -3,17 +3,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
+import Logo from 'assets/images/Spotify-logo.png';
 
 export default function MobileHeader() {
 	return (
 		<Container className="d-block d-md-none">
 			<nav className="navbar navbar-dark">
 				<Link to="/">
-					<img
-						className="w-75"
-						src="Spotify-logo.png"
-						alt="Imagem não disponível"
-					/>
+					<img className="w-75" src={Logo} alt="Imagem não disponível" />
 				</Link>
 				<button
 					className="navbar-toggler"
