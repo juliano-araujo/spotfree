@@ -7,6 +7,9 @@ import {
 	faCompactDisc,
 	faSearch,
 	faHome,
+	faMusic,
+	faUser,
+	faDoorClosed,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -17,4 +20,7 @@ library.add(
 	faCompactDisc,
 	faSearch,
 	faHome,
+	faMusic,
+	faUser,
+	faDoorClosed,
 );
