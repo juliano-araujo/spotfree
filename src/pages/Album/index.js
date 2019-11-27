@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import { firestore, storage } from 'services/firebase';
 import ListItem from './AlbumListItem';
 import { AlbumImage, Button, MusicList } from './styles';
 
-export default function Album({ playingMusicId }) {
-	Album.propTypes = {
-		playingMusicId: PropTypes.string.isRequired,
-	};
-
+export default function Album({
+	playingMusicId,
+	playingMusicState,
+	onAlbumPlayingMusicChange,
+}) {
 	const [albumImagemUrl, setAlbumImageUrl] = useState('');
 	const [albumArtist, setAlbumArtist] = useState('');
 	const [albumName, setAlbumName] = useState('');
@@ -84,13 +83,15 @@ export default function Album({ playingMusicId }) {
 						<p className="h2 text-center text-white font-weight-bold mb-2">
 							{albumName}
 						</p>
-						<p className="text-center text-muted p-0">
-							{albumArtist}
-						</p>
+						<p className="text-center text-muted p-0">{albumArtist}</p>
 					</div>
 					{/* Botão e Informações */}
 					<div className="col-5 col-xs-3 col-sm-4 col-md-4 col-lg-6 mt-3">
-						<Button className="btn-block text-white py-1">
+						<Button
+							onClick={() => {
+								onAlbumPlayingMusicChange(albumId, 0);
+							}}
+							className="btn-block text-white py-1">
 							Play
 						</Button>
 						<p className="text-center text-white-50 my-3">
@@ -110,6 +111,10 @@ export default function Album({ playingMusicId }) {
 								musicName={item.name}
 								musicDuration={item.duration}
 								musicArtist={item.artist}
+								onDoubleClick={() => {
+									console.tron.log(item.id);
+									onAlbumPlayingMusicChange(albumId, item.id);
+								}}
 							/>
 						))}
 					</MusicList>
