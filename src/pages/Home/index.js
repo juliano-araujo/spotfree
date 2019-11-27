@@ -4,7 +4,7 @@ import Album from './Album';
 import { firestore, storage } from 'services/firebase';
 
 export default function Home() {
-	const [albuns, setAlbuns] = useState([{}]);
+	const [albuns, setAlbuns] = useState([]);
 
 	async function fetchAlbunsInfo() {
 		try {
