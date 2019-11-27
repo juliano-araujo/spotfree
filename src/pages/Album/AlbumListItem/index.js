@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import Icon from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 
 import { Container } from './styles';
 
@@ -10,36 +10,33 @@ export default function AlbumListItem({
 	musicArtist,
 	musicDuration,
 	playingState,
+	onDoubleClick,
 }) {
 	AlbumListItem.propTypes = {
 		musicName: PropTypes.string.isRequired,
 		musicArtist: PropTypes.string.isRequired,
 		musicDuration: PropTypes.string.isRequired,
+		onClick: PropTypes.func,
 		playingState: PropTypes.oneOf(['playing', 'paused']),
 	};
 
 	AlbumListItem.defaultProps = {
-		playingState: undefined,
+		playingState: null,
+		onClick: null,
 	};
 
-	function musicIcon(playingState) {
-		if (playingState) {
-			if (playingState === 'playing') {
-				return 'play';
-			} else {
-				return 'pause';
-			}
-		} else {
-			return 'music';
-		}
-	}
-
 	return (
-		<Container className="my-2">
+		<Container className="my-2" onDoubleClick={onDoubleClick}>
 			<div className="row p-2">
 				<div className="col-1 my-auto">
 					<Icon
-						icon={musicIcon(playingState)}
+						icon={
+							playingState
+								? playingState === 'playing'
+									? 'play'
+									: 'pause'
+								: 'music'
+						}
 						className="float-right"
 					/>
 				</div>
@@ -49,9 +46,7 @@ export default function AlbumListItem({
 							<p className="p-0 m-0">{musicName}</p>
 						</div>
 						<div className="col-12">
-							<p className="blockquote-footer p-0 m-0">
-								{musicArtist}
-							</p>
+							<p className="blockquote-footer p-0 m-0">{musicArtist}</p>
 						</div>
 					</div>
 				</div>
