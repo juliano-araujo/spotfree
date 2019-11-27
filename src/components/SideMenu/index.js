@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Logo from 'assets/images/Spotify-logo.png';
 import { FixedNav } from './styles';
+import { logOut } from 'services/firebase';
 
 export default function SideMenu() {
 	return (
@@ -39,6 +40,14 @@ export default function SideMenu() {
 							<Icon icon="compact-disc" />
 							&nbsp;Minha Biblioteca
 						</Link>
+					</li>
+					<li className="nav-item mt-4">
+						<span onClick={logOut} className="nav-link" href="#">
+							<Icon icon="door-closed" className="m-0 p-0">
+								&nbsp;
+							</Icon>
+							Sair
+						</span>
 					</li>
 				</ul>
 			</FixedNav>
