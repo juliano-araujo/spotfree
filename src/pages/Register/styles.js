@@ -19,3 +19,14 @@ export const Menu = styled.div`
 export const LogoContainer = styled.a`
 	margin: auto;
 `;
+
+export const Body = styled.div`
+	width: 100%;
+	height: 90vh;
+`;
+
+export const SignIn = styled.div`
+	background-color: white;
+	font-size: 120%;
+	margin: auto;
+`;
