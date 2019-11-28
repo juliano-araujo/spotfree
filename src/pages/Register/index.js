@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { auth } from 'services/firebase';
-import { Container, Menu, LogoContainer } from './styles';
+import { Container, Menu, LogoContainer, Body, SignIn } from './styles';
 import Logo from 'assets/images/Spotify-logo.png';
 
 export default function Register() {
@@ -21,7 +21,7 @@ export default function Register() {
 		event.preventDefault();
 		try {
 			auth.createUserWithEmailAndPassword(fields.email, fields.password);
-			history.replace(from);
+			history.replace('/');
 		} catch (err) {
 			const errCode = err.code;
 			const errMessage = err.message;
@@ -64,11 +64,9 @@ export default function Register() {
 
 			{/* Main */}
 			<main>
-				<div id="container-principal" className="container-fluid">
+				<Body className="container-fluid">
 					<div className="row h-100">
-						<div
-							id="col-signin"
-							className="col-xs-8 col-sm-8 col-md-8 col-lg-6 col-xl-3">
+						<SignIn className="col-xs-8 col-sm-8 col-md-8 col-lg-6 col-xl-3">
 							<h1 className="display-3 mb-3 text-center text-success">
 								Cadastro
 							</h1>
@@ -128,9 +126,9 @@ export default function Register() {
 									Entrar
 								</button>
 							</form>
-						</div>
+						</SignIn>
 					</div>
-				</div>
+				</Body>
 			</main>
 		</Container>
 	);
