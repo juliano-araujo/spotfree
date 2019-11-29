@@ -3,6 +3,7 @@ import React, {
 	useState,
 	useImperativeHandle,
 	forwardRef,
+	useCallback,
 } from 'react';
 
 import { Link } from 'react-router-dom';
@@ -10,6 +11,7 @@ import PropTypes from 'prop-types';
 
 import { convertSecondsToTime } from 'utils';
 import { Container, Icons, Icon } from './styles';
+import useKeyPress from 'hooks/useKeyPress';
 
 function Player(
 	{
@@ -48,10 +50,43 @@ function Player(
 
 	const audioRef = useRef();
 
-	useImperativeHandle(ref, () => ({
-		play,
-		pause,
-	}));
+	const play = useCallback(() => {
+		if (audioUrl.trim() !== '') {
+			audioRef.current.play();
+			setIsPlaying(true);
+		}
+	}, [audioUrl]);
+
+	const pause = useCallback(() => {
+		audioRef.current.pause();
+		setIsPlaying(false);
+	}, []);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			play,
+			pause,
+		}),
+		[play, pause],
+	);
+
+	function tooglePlayPause() {
+		const paused = audioRef.current.paused;
+		if (!paused) {
+			pause();
+		} else {
+			play();
+		}
+	}
+
+	useKeyPress(
+		event => {
+			tooglePlayPause();
+			event.preventDefault();
+		},
+		[' ', 'k'],
+	);
 
 	function handleMouseOver() {
 		setIsHovering(true);
@@ -69,36 +104,28 @@ function Player(
 		setDuration(audioRef.current.duration);
 	}
 
+	function playOnCanPlay(audioEl) {
+		audioEl.addEventListener(
+			'canplay',
+			event => {
+				play();
+			},
+			{ once: true },
+		);
+	}
+
 	function handleBackMusic() {
 		onBackMusic();
-		audioRef.current.play();
+		playOnCanPlay(audioRef);
 	}
 
 	function handleNextMusic() {
 		onNextMusic();
-		audioRef.current.play();
+		playOnCanPlay(audioRef);
 	}
 
 	function handleTimeUpdate() {
 		setTime(audioRef.current.currentTime);
-	}
-
-	function tooglePlayPause() {
-		if (!audioRef.current.paused) {
-			pause();
-		} else {
-			play();
-		}
-	}
-
-	function play() {
-		audioRef.current.play();
-		setIsPlaying(true);
-	}
-
-	function pause() {
-		audioRef.current.pause();
-		setIsPlaying(false);
 	}
 
 	return (
