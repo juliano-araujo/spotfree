@@ -21,18 +21,18 @@ export default function Register() {
 		event.preventDefault();
 		try {
 			auth.createUserWithEmailAndPassword(fields.email, fields.password);
-			history.replace('/');
+			history.replace(from);
 		} catch (err) {
 			const errCode = err.code;
 			const errMessage = err.message;
 			if (errCode === 'auth/email-already-in-use') {
-				console.log('Email já cadastrado');
+				console.tron.log('Email já cadastrado');
 			} else if (errCode === 'auth/invalid-email') {
-				console.log('Email Inválido');
+				console.tron.log('Email Inválido');
 			} else if (errCode === 'auth/weak-password') {
-				console.log('Senha fraca');
+				console.tron.log('Senha fraca');
 			} else {
-				console.log(errMessage);
+				console.trom.log(errMessage);
 			}
 		}
 	}

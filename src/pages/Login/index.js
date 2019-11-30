@@ -37,7 +37,7 @@ export default function Login() {
 			} else {
 				console.tron.log(error);
 			}
-			console.log(error);
+			console.tron.log(error);
 		}
 	}
 
