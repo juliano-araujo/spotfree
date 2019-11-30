@@ -68,12 +68,16 @@ export default function Main() {
 					musicUrl,
 				});
 
-				musicList.push(musicData);
+				musicList[musicData.number - 1] = musicData;
 			});
 			await Promise.all(promises);
-			setPlayList(musicList);
+			// Limpa os valores indefinidos em álbuns incompletos
+			const cleanedMusicList = musicList.filter(item => item);
+			setPlayList(cleanedMusicList);
 			if (musicId) {
-				const musicIndex = musicList.findIndex(item => item.id === musicId);
+				const musicIndex = cleanedMusicList.findIndex(
+					item => item.id === musicId,
+				);
 				setCurrentMusic(musicIndex);
 				playerRef.current.play();
 			} else {
