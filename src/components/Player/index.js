@@ -72,8 +72,7 @@ function Player(
 	);
 
 	function tooglePlayPause() {
-		const paused = audioRef.current.paused;
-		if (!paused) {
+		if (isPlaying) {
 			pause();
 		} else {
 			play();
@@ -104,8 +103,8 @@ function Player(
 		setDuration(audioRef.current.duration);
 	}
 
-	function playOnCanPlay(audioEl) {
-		audioEl.addEventListener(
+	function playOnCanPlay(audioRef) {
+		audioRef.current.addEventListener(
 			'canplay',
 			event => {
 				play();
@@ -115,8 +114,12 @@ function Player(
 	}
 
 	function handleBackMusic() {
-		onBackMusic();
-		playOnCanPlay(audioRef);
+		if (time > 3) {
+			audioRef.current.currentTime = 0;
+		} else {
+			onBackMusic();
+			playOnCanPlay(audioRef);
+		}
 	}
 
 	function handleNextMusic() {
