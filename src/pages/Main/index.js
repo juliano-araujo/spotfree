@@ -16,7 +16,7 @@ export default function Main() {
 	function nextMusic() {
 		if (currentMusic < playList.length - 1) {
 			setCurrentMusic(currentMusic + 1);
-		} else {
+		} else if (currentMusic !== -1) {
 			setCurrentMusic(0);
 		}
 	}
@@ -55,7 +55,7 @@ export default function Main() {
 				const musicData = documentSnap.data();
 				const musicFilename = `albuns/${albumId}/musics/${musicData.filename}`;
 				const musicRef = storage.ref(musicFilename);
-				const musicUrl = await musicRef.getDownloadURL();
+				const audioUrl = await musicRef.getDownloadURL();
 
 				Object.assign(musicData, {
 					id: documentSnap.id,
@@ -65,12 +65,13 @@ export default function Main() {
 					albumYear,
 					albumArtist,
 					albumName,
-					musicUrl,
+					audioUrl,
 				});
 
 				musicList[musicData.number - 1] = musicData;
 			});
 			await Promise.all(promises);
+
 			// Limpa os valores indefinidos em álbuns incompletos
 			const cleanedMusicList = musicList.filter(item => item);
 			setPlayList(cleanedMusicList);
@@ -102,17 +103,7 @@ export default function Main() {
 			<footer>
 				<Player
 					ref={playerRef}
-					musicName={playList[currentMusic] ? playList[currentMusic].name : ''}
-					musicArtist={
-						playList[currentMusic] ? playList[currentMusic].artist : ''
-					}
-					albumId={playList[currentMusic] ? playList[currentMusic].albumId : ''}
-					audioUrl={
-						playList[currentMusic] ? playList[currentMusic].musicUrl : ''
-					}
-					imageUrl={
-						playList[currentMusic] ? playList[currentMusic].albumImageUrl : ''
-					}
+					musicInfo={playList[currentMusic] ? playList[currentMusic] : {}}
 					onNextMusic={nextMusic}
 					onBackMusic={backMusic}
 				/>
