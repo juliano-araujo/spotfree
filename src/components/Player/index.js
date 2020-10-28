@@ -15,32 +15,32 @@ import useKeyPress from 'hooks/useKeyPress';
 
 function Player(
 	{
-		musicName,
-		musicArtist,
-		albumId,
-		audioUrl,
-		imageUrl,
+		musicInfo: { name, artist, albumId, audioUrl, albumImageUrl },
 		onNextMusic,
 		onBackMusic,
 	},
 	ref,
 ) {
 	Player.propTypes = {
-		musicName: PropTypes.string,
-		musicArtist: PropTypes.string,
-		albumId: PropTypes.string,
-		audioUrl: PropTypes.string,
-		imageUrl: PropTypes.string,
+		musicInfo: PropTypes.shape({
+			name: PropTypes.string,
+			artist: PropTypes.string,
+			albumId: PropTypes.string,
+			audioUrl: PropTypes.string,
+			albumImageUrl: PropTypes.string,
+		}),
 		onNextMusic: PropTypes.func.isRequired,
 		onBackMusic: PropTypes.func.isRequired,
 	};
 
 	Player.defaultProps = {
-		musicName: '',
-		musicArtist: '',
-		albumId: '',
-		audioUrl: '',
-		imageUrl: '',
+		musicInfo: {
+			name: '',
+			artist: '',
+			albumId: '',
+			audioUrl: '',
+			albumImageUrl: '',
+		},
 	};
 
 	const [isHovering, setIsHovering] = useState(false);
@@ -51,7 +51,7 @@ function Player(
 	const audioRef = useRef();
 
 	const play = useCallback(() => {
-		if (audioUrl.trim() !== '') {
+		if (audioUrl && audioUrl.trim() !== '') {
 			audioRef.current.play();
 			setIsPlaying(true);
 		}
@@ -72,8 +72,7 @@ function Player(
 	);
 
 	function tooglePlayPause() {
-		const paused = audioRef.current.paused;
-		if (!paused) {
+		if (isPlaying) {
 			pause();
 		} else {
 			play();
@@ -85,7 +84,7 @@ function Player(
 			tooglePlayPause();
 			event.preventDefault();
 		},
-		[' ', 'k'],
+		[' '],
 	);
 
 	function handleMouseOver() {
@@ -104,24 +103,24 @@ function Player(
 		setDuration(audioRef.current.duration);
 	}
 
-	function playOnCanPlay(audioEl) {
-		audioEl.addEventListener(
-			'canplay',
-			event => {
-				play();
-			},
-			{ once: true },
-		);
+	function playOnCanPlay(audioRef) {
+		audioRef.current.addEventListener('canplay', event => play(), {
+			once: true,
+		});
 	}
 
 	function handleBackMusic() {
-		onBackMusic();
-		playOnCanPlay(audioRef);
+		if (time > 5) {
+			audioRef.current.currentTime = 0;
+		} else {
+			onBackMusic();
+			if (isPlaying) playOnCanPlay(audioRef);
+		}
 	}
 
 	function handleNextMusic() {
 		onNextMusic();
-		playOnCanPlay(audioRef);
+		if (isPlaying) playOnCanPlay(audioRef);
 	}
 
 	function handleTimeUpdate() {
@@ -148,8 +147,8 @@ function Player(
 								<Link to={`album/${albumId}`}>
 									<img
 										src={
-											imageUrl
-												? imageUrl
+											albumImageUrl
+												? albumImageUrl
 												: 'https://image.freepik.com/icones-gratis/preto-simples-nota-vector-musica_318-10095.jpg'
 										}
 										className="card-img"
@@ -162,7 +161,7 @@ function Player(
 							<div className="col-xs-7 col-sm-7 col-md-6 col-lg-4 col-xl-3 d-xs-block d-sm-none">
 								<Link to={`album/${albumId}`}>
 									<img
-										src={imageUrl}
+										src={albumImageUrl}
 										className="card-img my-2 mx-1"
 										alt="imagem não disponível"
 										style={{ width: '7vh' }}
@@ -172,8 +171,8 @@ function Player(
 							{/* Artist */}
 							<div className="col-md-6 col-lg-8 d-xs-block d-none d-md-block">
 								<div>
-									<p className="text-white mt-2 mb-0">{musicName}</p>
-									<p className="blockquote-footer m-0">{musicArtist}</p>
+									<p className="text-white mt-2 mb-0">{name}</p>
+									<p className="blockquote-footer m-0">{artist}</p>
 								</div>
 							</div>
 						</div>
@@ -219,7 +218,7 @@ function Player(
 									</div>
 									<div className="col-1 p-0">
 										<p className="text-white float-left my-2">
-											{convertSecondsToTime(duration)}
+											-{convertSecondsToTime(duration - time)}
 										</p>
 									</div>
 								</div>
